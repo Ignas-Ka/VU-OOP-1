@@ -12,58 +12,60 @@ using std::setw;
 struct data
 {
     string vardas, pavarde;
-    int egz;
+    int paz[3] = {0}, egz;
     double vid;
-    int paz[];
 };
 
-void ivestis(data* temp, int& pazymiuSk);
+void ivestis(data& temp);
 
-void isvestis(data* temp, int& pazymiuSk);
+void isvestis(data& temp);
 
 int main()
 {
-    struct data* duomenys = (struct data *)malloc(sizeof(struct data) + 50 * sizeof(int));
-    duomenys = new data[3];
-    int pazymiuSk = 0;
-    ivestis(duomenys, pazymiuSk);
-    isvestis(duomenys, pazymiuSk);
+    data* duomenys = new data[2];
+    for(data* a = duomenys; a < duomenys + 2; a++) {
+        ivestis(*a);
+    }
 
+    for(data* a = duomenys; a < duomenys + 2; a++) {
+        isvestis(*a);
+    }
+
+    delete[] duomenys;
 
     return 0;
 }
 
 
-void ivestis(data* temp, int& pazymiuSk)
+void ivestis(data& temp)
 {
     int vidurkis = 0;
-    for(int i = 0; i < 3; i++)
+
+    int pazymiuSk = 3;
+    cout << "Iveskite varda ";
+    cin >> temp.vardas;
+    cout << "Iveskite pavarde ";
+    cin >> temp.pavarde;
+    for(int i = 0; i < pazymiuSk; i++)
     {
-        cout << "Iveskite varda ";
-        cin >> temp[i].vardas;
-        cout << "Iveskite pavarde ";
-        cin >> temp[i].pavarde;
-        cout << "Iveskite pazymiu skaiciu ";
-        cin >> pazymiuSk;
-        for(int j = 0; j < pazymiuSk; j++)
-        {
-            cout << "Iveskite " << i+1 << " -a(-i) pazymi ";
-            cin >> temp[i].paz[j];
-            vidurkis += temp[i].paz[j];
-        }
-        temp[i].vid = vidurkis/pazymiuSk;
-        vidurkis = 0;
-        cout << "Iveskite egzamino ivertinima ";
-        cin >> temp[i].egz;
+        cout << "Iveskite " << i+1 << " -a(-i) pazymi: ";
+        cin >> temp.paz[i];
+        vidurkis += temp.paz[i];
     }
+    temp.vid = vidurkis/pazymiuSk;
+    vidurkis = 0;
+    cout << "Iveskite egzamino ivertinima ";
+    cin >> temp.egz;
+
+
 }
 
-void isvestis(data* temp, int& pazymiuSk)
+void isvestis(data& temp)
 {
-    cout << setw(20) << "Pavarde" << setw(20) << "Vardas" << setw(20) << "Galutinis (Vid.)" << endl;
-    cout << "-----------------------------------------------------------------";
+    cout << setw(20) << temp.pavarde << setw(20) << temp.vardas;
          for(int i = 0; i < 3; i++)
     {
-        cout << setw(20) << temp[i].pavarde << setw(20) << temp[i].vardas << setw(20) << temp[i].vid << endl;
+        cout << setw(10) << temp.paz[i];
     }
+    cout << setw(10) << temp.egz << endl;
 }

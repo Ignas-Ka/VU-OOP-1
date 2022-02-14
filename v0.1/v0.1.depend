@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1644832741 source:c:\users\ignas\documents\github\vu-oop-1\v0.1\main.cpp
+	<iostream>
+	<string>
+	<iomanip>
+
