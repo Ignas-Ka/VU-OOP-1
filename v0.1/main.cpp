@@ -5,7 +5,6 @@
 #include <cmath>
 #include <ctime>
 
-
 using std::cout;
 using std::cin;
 using std::endl;
@@ -29,11 +28,11 @@ void ivestis(data& temp);
 
 void isvestis(data& temp);
 
-bool isNumber(const string& str);
+bool arSkaicius(const string& str);
 
 void bubbleSort(int arr[]);
 
-double findMedian(int a[], int n);
+double medianosSkaiciavimas(int a[], int n);
 
 int main()
 {
@@ -44,7 +43,6 @@ int main()
     for(data* a = duomenys; a < duomenys + MAX_MOKINIU; a++)
     {
         ivestis(*a);
-//        bubbleSort(&*a -> paz);
         cout << "Ar bus dar vienas mokinys? (0 - nebus /1 - bus )";
         cin >> arSustabdyti;
         if (arSustabdyti != "1")
@@ -54,11 +52,6 @@ int main()
         index++;
 
     }
-
-//    for(int i = 0; i < PAZYMIU_SK; i++) {
-//        cout << duomenys -> paz[i] << " ";
-//    }
-//    cout << endl;
 
     for(data* a = duomenys; a < duomenys + index + 1; a++)
     {
@@ -70,7 +63,7 @@ int main()
     return 0;
 }
 
-bool isNumber(const string& str)
+bool arSkaicius(const string& str)
 {
     return !str.empty() &&
            std::find_if(str.begin(), str.end(),
@@ -86,13 +79,12 @@ void ivestis(data& temp)
     double vidurkis = 0;
     string pazim = "0";
     string atsitikiniai = "0";
-    int atsitiktinisPazymys = 0;
 
     cout << "Iveskite varda ";
     cin >> temp.vardas;
     cout << "Iveskite pavarde ";
     cin >> temp.pavarde;
-    cout << "Ar norite gauti atsitiktinius namu darbu pazymius? (1 - taip)";
+    cout << "Ar norite gauti atsitiktinius namu darbu pazymius ir egzamino iverti? (1 - taip)";
     cin >> atsitikiniai;
     if(atsitikiniai == "1")
     {
@@ -111,7 +103,7 @@ void ivestis(data& temp)
     {
         for(int i = 0; i < PAZYMIU_SK; i++)
         {
-            while(!(isNumber(pazim)) || stoi(pazim) < 1 || stoi(pazim) > 10)
+            while(!(arSkaicius(pazim)) || stoi(pazim) < 1 || stoi(pazim) > 10)
             {
                 cout << "Iveskite " << i+1 << " -a(-i) pazymi: ";
                 cin >> pazim;
@@ -120,7 +112,7 @@ void ivestis(data& temp)
             vidurkis += temp.paz[i];
             pazim = "0";
         }
-        while(!(isNumber(egzas)) || stoi(egzas) < 1 || stoi(egzas) > 10)
+        while(!(arSkaicius(egzas)) || stoi(egzas) < 1 || stoi(egzas) > 10)
         {
             cout << "Iveskite tinkama egzamino ivertinima ";
             cin >> egzas;
@@ -152,7 +144,7 @@ void isvestis(data& temp)
     }
     else
     {
-        cout << setw(10) << setprecision(3) << findMedian(temp.paz, temp.egz) << endl;
+        cout << setw(10) << setprecision(3) << medianosSkaiciavimas(temp.paz, temp.egz) << endl;
     }
 }
 
@@ -168,16 +160,11 @@ void bubbleSort(int arr[])
     }
 }
 
-double findMedian(int a[], int n)
+double medianosSkaiciavimas(int a[], int n)
 {
     a[PAZYMIU_SK] = n;
 
     bubbleSort(a);
-
-
-//    cout << "CIA PADARYK FORA, KAD PATIKRINT KAS GAUNASI ISSORTINUS ARRAY'JU, NES LOGIKA FINDMEDIAN GERA";
-    ///MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-
 
     if ((PAZYMIU_SK+1) % 2 != 0)
     {
