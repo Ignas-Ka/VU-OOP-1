@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <algorithm>
 #include <cmath>
+#include <ctime>
+
 
 using std::cout;
 using std::cin;
@@ -13,12 +15,13 @@ using std::setprecision;
 using std::swap;
 
 const int MAX_MOKINIU = 10;
-const int PAZYMIU_SK = 4;
+const int PAZYMIU_SK = 3;
 
 struct data
 {
     string vardas, pavarde;
-    int paz[PAZYMIU_SK] = {0}, egz;
+    int paz[PAZYMIU_SK] = {0};
+    double egz;
     double vid;
 };
 
@@ -30,7 +33,7 @@ bool isNumber(const string& str);
 
 void bubbleSort(int arr[]);
 
-double findMedian(int a[]);
+double findMedian(int a[], int n);
 
 int main()
 {
@@ -41,7 +44,7 @@ int main()
     for(data* a = duomenys; a < duomenys + MAX_MOKINIU; a++)
     {
         ivestis(*a);
-        bubbleSort(&*a -> paz);
+//        bubbleSort(&*a -> paz);
         cout << "Ar bus dar vienas mokinys? (0 - nebus /1 - bus )";
         cin >> arSustabdyti;
         if (arSustabdyti != "1")
@@ -82,30 +85,50 @@ void ivestis(data& temp)
     string egzas = "0";
     double vidurkis = 0;
     string pazim = "0";
+    string atsitikiniai = "0";
+    int atsitiktinisPazymys = 0;
 
     cout << "Iveskite varda ";
     cin >> temp.vardas;
     cout << "Iveskite pavarde ";
     cin >> temp.pavarde;
-    for(int i = 0; i < PAZYMIU_SK; i++)
+    cout << "Ar norite gauti atsitiktinius namu darbu pazymius? (1 - taip)";
+    cin >> atsitikiniai;
+    if(atsitikiniai == "1")
     {
-        while(!(isNumber(pazim)) || stoi(pazim) < 1 || stoi(pazim) > 10)
+        srand(time(0));
+
+        for(int i = 0; i < PAZYMIU_SK; i++)
         {
-            cout << "Iveskite " << i+1 << " -a(-i) pazymi: ";
-            cin >> pazim;
+            temp.paz[i] = ((rand() % 10) + 1);
+            vidurkis += temp.paz[i];
         }
-        temp.paz[i] = stoi(pazim);
-        vidurkis += temp.paz[i];
-        pazim = "0";
+        temp.egz = ((rand() % 10) + 1);
+        temp.vid = (vidurkis*0.4/(PAZYMIU_SK)+(temp.egz*0.6));
+        vidurkis = 0;
     }
-    temp.vid = vidurkis/PAZYMIU_SK;
-    vidurkis = 0;
-    while(!(isNumber(egzas)) || stoi(egzas) < 1 || stoi(egzas) > 10)
+    else
     {
-        cout << "Iveskite tinkama egzamino ivertinima ";
-        cin >> egzas;
+        for(int i = 0; i < PAZYMIU_SK; i++)
+        {
+            while(!(isNumber(pazim)) || stoi(pazim) < 1 || stoi(pazim) > 10)
+            {
+                cout << "Iveskite " << i+1 << " -a(-i) pazymi: ";
+                cin >> pazim;
+            }
+            temp.paz[i] = stoi(pazim);
+            vidurkis += temp.paz[i];
+            pazim = "0";
+        }
+        while(!(isNumber(egzas)) || stoi(egzas) < 1 || stoi(egzas) > 10)
+        {
+            cout << "Iveskite tinkama egzamino ivertinima ";
+            cin >> egzas;
+        }
+        temp.egz = stoi(egzas);
+        temp.vid = (vidurkis*0.4/(PAZYMIU_SK)+(temp.egz*0.6));
+        vidurkis = 0;
     }
-    temp.egz = stoi(egzas);
 
 
 }
@@ -123,19 +146,21 @@ void isvestis(data& temp)
     cout << endl;
     cout << "Mediana(0) ar vidurkis(1) ";
     cin >> medArVid;
-    if (medArVid == 1) {
+    if (medArVid == 1)
+    {
         cout << setw(10) << setprecision(3) << temp.vid << endl;
     }
-    else {
-        cout << setw(10) << setprecision(3) << findMedian(temp.paz) << endl;
+    else
+    {
+        cout << setw(10) << setprecision(3) << findMedian(temp.paz, temp.egz) << endl;
     }
 }
 
 void bubbleSort(int arr[])
 {
-    for (int i = 0; i < PAZYMIU_SK-1; i++)
+    for (int i = 0; i < PAZYMIU_SK; i++)
     {
-        for (int j = 0; j < PAZYMIU_SK-i-1; j++)
+        for (int j = 0; j < PAZYMIU_SK-i; j++)
         {
             if (arr[j] > arr[j+1])
                 swap(arr[j], arr[j+1]);
@@ -143,11 +168,21 @@ void bubbleSort(int arr[])
     }
 }
 
-double findMedian(int a[])
+double findMedian(int a[], int n)
 {
-    if (PAZYMIU_SK % 2 != 0) {
-        return (double)a[PAZYMIU_SK / 2];
+    a[PAZYMIU_SK] = n;
+
+    bubbleSort(a);
+
+
+//    cout << "CIA PADARYK FORA, KAD PATIKRINT KAS GAUNASI ISSORTINUS ARRAY'JU, NES LOGIKA FINDMEDIAN GERA";
+    ///MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+
+
+    if ((PAZYMIU_SK+1) % 2 != 0)
+    {
+        return (double)a[(PAZYMIU_SK+1) / 2];
     }
 
-    return (double)(a[(PAZYMIU_SK - 1) / 2] + a[PAZYMIU_SK / 2]) / 2.0;
+    return (double)(a[(PAZYMIU_SK) / 2] + a[(PAZYMIU_SK+1) / 2]) / 2.0;
 }
