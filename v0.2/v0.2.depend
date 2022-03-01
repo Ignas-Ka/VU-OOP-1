@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1646161205 source:c:\users\ignas\documents\github\vu-oop-1\v0.2\main.cpp
+	<algorithm>
+	<iomanip>
+	<iostream>
+	<random>
+	<string>
+	<vector>
+	"header.h"
+	<fstream>
+
+1646160520 c:\users\ignas\documents\github\vu-oop-1\v0.2\header.h
+
