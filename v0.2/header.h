@@ -1,5 +1,6 @@
 #ifndef HEADER_H_INCLUDED
 #define HEADER_H_INCLUDED
+#include <fstream>
 
 using std::cin;
 using std::cout;
@@ -15,6 +16,7 @@ using std::string;
 using std::vector;
 using std::ifstream;
 using std::ofstream;
+using std::stringstream;
 
 #define PAZYMYS_MIN 1
 #define PAZYMYS_MAX 10
@@ -24,7 +26,7 @@ struct Studentas
     string vardas;
     string pavarde;
     vector<int> pazymiai;
-    int egzamino;
+    double egzamino;
     double pazymiuVid;
     double pazymysGalutinis;
     double pazymiuMed;
@@ -122,26 +124,35 @@ bool PazymioVerifikacija(int pazymys)
 
 void KuriSpausdinti(Studentas *studentas, bool RodytiVidurki = true)
 {
-    cout << left
+    ofstream fout("rezultatai.txt", std::ios_base::app);
+
+
+    fout << left
          << setw(10) << studentas->vardas
          << setw(15) << studentas->pavarde
          << setw(12) << fixed << setprecision(2)
          << (RodytiVidurki ? studentas->pazymysGalutinis : studentas->pazymiuMed)
-         << endl;
+         << '\n';
+
+    fout.close();
 }
 
 void Rezultatai(vector<Studentas> &studentai, bool RodytiVidurki = true)
 {
-    cout << left
+    ofstream fout("rezultatai.txt");
+
+    fout << left
          << setw(10) << "Vardas"
          << setw(16) << "Pavarde"
-         << "Galutinis " << (RodytiVidurki ? "Vid." : "Med.") << endl;
-    cout << "-----------------------------------------------------------" << endl;
+         << "Galutinis " << (RodytiVidurki ? "Vid." : "Med.") << '\n';
+    fout << "-----------------------------------------------------------" << '\n';
 
     for (int i = 0; i < studentai.size(); i++)
     {
         KuriSpausdinti(&studentai[i], RodytiVidurki);
     }
+
+    fout.close();
 }
 
 void StudentoFun(Studentas *studentas, bool ArSkaiciuotiVidurki = true)
@@ -173,8 +184,8 @@ void SpausdintiAtsitiktiniusPazymius(Studentas *studentas)
     {
         cout << studentas->pazymiai[i] << " ";
     }
-    cout << endl;
-    cout << "Sugeneruotas atsitiktinis egzamino pazymys: " << studentas->egzamino << endl;
+    cout << '\n';
+    cout << "Sugeneruotas atsitiktinis egzamino pazymys: " << studentas->egzamino << '\n';
 }
 
 

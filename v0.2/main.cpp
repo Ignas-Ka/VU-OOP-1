@@ -6,69 +6,110 @@
 #include <vector>
 #include "header.h"
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sstream>
 
-void eil_po_eil(string read_vardas, string write_vardas)
+
+bool palygintiVardus(Studentas &s1, Studentas &s2)
 {
-    vector<string> splited;
-    string eil;
+    return (s1.vardas < s2.vardas);
+}
 
-    ifstream open_f(read_vardas);
-    while (open_f)
+std::vector<std::string> split(std::string str, char delimiter)
+{
+	std::vector<std::string> result;
+    size_t start;
+    size_t end = 0;
+
+    while ((start = str.find_first_not_of(delimiter, end)) != std::string::npos)
     {
-        if (!open_f.eof())
-        {
-            getline(open_f, eil);
-            splited.push_back(eil);
-        }
-        else break;
+        end = str.find(delimiter, start);
+        result.push_back(str.substr(start, end - start));
     }
-    open_f.close();
 
-    ofstream out_f(write_vardas);
-    for (string a: splited) out_f << a;
-    out_f.close();
-    splited.resize(0);
+	return result;
 }
 
 int main()
 {
+    std::ios::sync_with_stdio(false);
+
     vector<Studentas> studentai;
 
     const bool arSkaitytiIsFailo = patvirtinti("Ar norite nuskaityti studentus is failo?");
 
+
     if(arSkaitytiIsFailo)
     {
-
+        vector<string> splited;
         Studentas studentas;
+        string eil;
+        stringstream my_buffer;
+        string tempString;
+
+        int n;
+
 
         ifstream fin("10000.txt");
+        try
+        {
+            if(!fin)
+            {
+                throw(n);
+            }
+        }
+        catch(int n)
+        {
+            cout << "Tokio failo nera" << "\n";
+        }
+
+        my_buffer << fin.rdbuf();
+        fin.close();
+
+        string word;
+        int ndSkaicius = -3;
 
         string line;
-        getline(fin, line);
+        getline(my_buffer, line);
 
-//        while(!fin.eof())
-//        {
-        for(int j = 0; j < 3000; j++)
+        stringstream ss(line);
+        while(ss >> word)
         {
-
-
-            fin >> studentas.vardas;
-            fin >> studentas.pavarde;
-            int pazymys = 0;
-            for(int i = 0; i < 15; i++)
-            {
-                fin >> pazymys;
-                studentas.pazymiai.push_back(pazymys);
-            }
-            fin >> studentas.egzamino;
-            studentai.push_back(studentas);
+            ++ndSkaicius;
         }
-//        }
 
 
+        while(my_buffer)
+        {
+            if (!my_buffer.eof())
+            {
+                getline(my_buffer, eil);
 
+                vector<string> eilDalys = split(eil, ' ');
 
-        fin.close();
+                studentas.vardas = eilDalys[0];
+                studentas.pavarde = eilDalys[1];
+
+                for(int i = 0; i < ndSkaicius; i++)
+                {
+                    tempString = eilDalys[2+i];
+//                    studentas.pazymiai[i] = stoi(tempString);
+//                    cout << to_string(eilDalys[2+i]) << endl;
+                }
+
+//                tempString = eilDalys[ndSkaicius+2];
+
+                studentas.egzamino = stoi(tempString);
+
+                studentai.push_back(studentas);
+                splited.push_back(eil);
+
+                sort(studentai.begin(), studentai.end(), palygintiVardus);
+            }
+            else break;
+        }
+
     }
     else
     {
@@ -202,9 +243,9 @@ int main()
         StudentoFun(&studentai[i], ArSkaiciuotiVidurki);
     }
 
-    cout << endl;
+    cout << '\n';
     Rezultatai(studentai, ArSkaiciuotiVidurki);
-    cout << endl;
+    cout << '\n';
 
     return 0;
 }

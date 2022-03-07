@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1646161205 source:c:\users\ignas\documents\github\vu-oop-1\v0.2\main.cpp
+1646687602 source:c:\users\ignas\documents\github\vu-oop-1\v0.2\main.cpp
 	<algorithm>
 	<iomanip>
 	<iostream>
@@ -8,6 +8,10 @@
 	<vector>
 	"header.h"
 	<fstream>
+	<stdio.h>
+	<stdlib.h>
+	<sstream>
 
-1646160520 c:\users\ignas\documents\github\vu-oop-1\v0.2\header.h
+1646687794 c:\users\ignas\documents\github\vu-oop-1\v0.2\header.h
+	<fstream>
 
