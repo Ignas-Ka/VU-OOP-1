@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1647798360 source:c:\users\ignas\desktop\bandymas\circle.cpp
+	"Circle.h"
+
+1647798480 c:\users\ignas\desktop\bandymas\circle.h
+	<iostream>
+	<fstream>
+	<iomanip>
+	<string>
+	<vector>
+	<iterator>
+	<algorithm>
+	<random>
+	<stdio.h>
+	<stdlib.h>
+	<sstream>
+	<chrono>
+
+1647798305 source:c:\users\ignas\desktop\bandymas\main.cpp
+	"Circle.h"
+
