@@ -6,12 +6,10 @@ int main()
 {
     std::ios::sync_with_stdio(false);
 
-//    fileGenerator(1000, "1000rez");
-
 
     setlocale(LC_ALL, "Lithuanian");
-    int mok = 0;    // nustatomas mokiniu skaicius
-    vector<data> sarasas;
+    int mok = 0;
+    list<data> sarasas;
     data laik;
     string abc;
     string dar;
@@ -29,7 +27,6 @@ int main()
 
         do {
             mok++;
-            sarasas.reserve(mok);
             cout << "Ar norite kad " << mok << " -am(ai) mokiniui(-ei) pazymiai butu generuojami atsitiktinai? (bet koks simbolis) - taip, 0 - ne" << endl;
             cin >> abc;
             if (abc == "0") {
@@ -79,8 +76,6 @@ int main()
         }
     }
     sarasas.clear();
-   // df.close();     // uzdaromas duomenu failas
-    //rf.close();     // uzdaromas rezultatu failas
     system("pause");
     return 0;
 }

@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1651070002 source:c:\users\ignas\desktop\bandymas\circle.cpp
+1648494872 source:c:\users\ignas\desktop\bandymasdeque\main.cpp
 	"Circle.h"
 
-1651070438 c:\users\ignas\desktop\bandymas\circle.h
+1651071406 c:\users\ignas\desktop\bandymasdeque\circle.h
 	<iostream>
 	<fstream>
 	<iomanip>
@@ -13,9 +13,10 @@
 	<random>
 	<stdio.h>
 	<stdlib.h>
+	<deque>
 	<sstream>
 	<chrono>
 
-1651069228 source:c:\users\ignas\desktop\bandymas\main.cpp
+1651071326 source:c:\users\ignas\desktop\bandymasdeque\circle.cpp
 	"Circle.h"
 

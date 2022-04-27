@@ -1,4 +1,3 @@
-
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -10,6 +9,7 @@
 #include <random>
 #include <stdio.h>
 #include <stdlib.h>
+#include <list>
 
 #include <sstream>
 #include <chrono>
@@ -25,17 +25,18 @@ using std::ofstream;
 using std::setw;
 using std::to_string;
 using std::left;
+using std::list;
 
 
 const int C = 50;
-const string duom = "1000000rez.txt";
-const string rez = "vargsai1000000.txt";
-const string rez1 = "kieti1000000.txt";
+const string duom = "100000rez.txt";
+const string rez = "vargsai100000.txt";
+const string rez1 = "kieti100000.txt";
 
 struct data {
     string vardas, pavarde;
     int egz = 0;
-    vector<int> nd;
+    list<int> nd;
     double rez = 0, mediana = 0;
 
 };
@@ -45,12 +46,12 @@ void isved(const data& temp);
 void isvedmediana(const data& temp);
 void ivestis1(data& temp, int kiek);
 bool isNumber(const string& s);
-void nuskaitymas();//pavadinimas pakeisti
+void nuskaitymas();
 void ivestisfailas(const data& temp);
 void isvedfailas(const data& temp);
 void fileGenerator(int studentuKiekis, string failoPav);
 
 
-void eil_po_eil(std::string read_vardas, std::string write_vardas, vector<data>& sarasas);
+void eil_po_eil(std::string read_vardas, std::string write_vardas, list<data>& sarasas);
 bool compare_pavarde(const string& a, const string& b);
 void trycatch(string& a);
