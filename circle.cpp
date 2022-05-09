@@ -1,9 +1,7 @@
-
 #include "Circle.h"
 
 
-void nuskaitymas()
-{
+void nuskaitymas() {
     ifstream df(duom);
     ofstream rf(rez);
     ofstream rf1(rez1);
@@ -16,7 +14,7 @@ void nuskaitymas()
     int p_elem = 0;
     int paz;
     double vidurkis = 0;
-    list<data> sarasas;
+    deque<data> sarasas;
     int ind = 0;
 
 
@@ -25,15 +23,10 @@ void nuskaitymas()
     auto st=start;
 
 
-    list<int>::iterator it;
-    list<int>::iterator it2;
-    int temporary;
-    while (!df.eof())
-    {
+    while (!df.eof()) {
         data temp;
         df >> temp.vardas >> temp.pavarde;
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             df >> paz;
             temp.nd.push_back(paz);
             vidurkis += paz;
@@ -48,23 +41,12 @@ void nuskaitymas()
         temp.rez = vidurkis * 0.4 + temp.egz * 0.6;
 
 
-//        temp.nd.sort();
-        it = temp.nd.begin();
-        if (temp.nd.size() % 2 == 1)
-        {
-            temporary = temp.nd.size() / 2;
-            advance(it, temporary);
-            temp.mediana = *it * 0.4 + temp.egz * 0.6;
-//            temp.mediana = temp.nd[temp.nd.size() / 2] * 0.4 + temp.egz * 0.6;
+        sort(temp.nd.begin(), temp.nd.begin() + temp.nd.size());
+        if (temp.nd.size() % 2 == 1) {
+            temp.mediana = temp.nd[temp.nd.size() / 2] * 0.4 + temp.egz * 0.6;
         }
-        else
-        {
-            it2 = temp.nd.begin();
-            temporary = temp.nd.size() / 2;
-            advance(it, temporary);
-            temporary = (temp.nd.size() / 2) - 1;
-            advance(it2, temporary);
-            temp.mediana = ((*it + *it2) / 2.0) * 0.4 + temp.egz * 0.6;
+        else {
+            temp.mediana = ((temp.nd[temp.nd.size() / 2] + temp.nd[(temp.nd.size() / 2) - 1]) / 2.0) * 0.4 + temp.egz * 0.6;
         }
 
 
@@ -72,66 +54,85 @@ void nuskaitymas()
 
         sarasas.push_back(temp);
         vidurkis = 0;
-        cout << ind << endl;
-        ind++;
+    cout << ind << endl;
+    ind++;
     }
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end-start; // Skirtumas (s)
     std::cout << "1000000 eiluciu failo nuskaitymas uztruko: "<< diff.count() << " s\n";
 
-//    std::sort(sarasas.begin(), sarasas.end(), [](data a, data b)
-//    {
-//        if (a.rez == b.rez) return a.pavarde < b.pavarde;
-//        return a.rez < b.rez;
-//    });
+    std::sort(sarasas.begin(), sarasas.end(), [](data a, data b) {
+        if (a.rez == b.rez) return a.pavarde < b.pavarde;
+        return a.rez < b.rez;
+        });
 
 
     start = std::chrono::high_resolution_clock::now();
 
 
 
-//    list<data> vargsiukai;
-//    list<data> kietiakai;
-//
-//    for (const auto& el : sarasas) {
-//        if(el.rez >= 5)
-//        {
-//            vargsiukai.push_back(el);
-//            rf1 << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
-//            rf1 << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
-//        }
-//        else
-//        {
-//            kietiakai.push_back(el);
-//            rf << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
-//            rf << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
-//        }
-//    }
+    deque<data> vargsiukai;
+    deque<data> kietiakai;
 
-    list<data> vargsiukai;
-
-    for (const auto& el : sarasas)
-    {
-        int iteratorius = 0;
-        list<data>::iterator itr1;
-        itr1 = sarasas.begin();
+    for (const auto& el : sarasas) {
         if(el.rez >= 5)
         {
-            rf1 << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
-            rf1 << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
+            vargsiukai.push_back(el);
         }
         else
         {
-            itr1 = sarasas.begin();
-            advance(itr1, iteratorius);
-            vargsiukai.push_back(el);
-            sarasas.erase(itr1);
-            rf << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
-            rf << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
+            kietiakai.push_back(el);
         }
-        iteratorius++;
     }
+
+    for (const auto& el : vargsiukai)
+    {
+        rf << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
+        rf << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
+
+    }
+
+
+    for (const auto& el : kietiakai)
+    {
+        rf1 << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
+        rf1 << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
+
+    }
+
+//    deque<data> vargsiukai;
+//
+//    for (const auto& el : sarasas)
+//    {
+//        int iteratorius = 0;
+//        deque<data>::iterator itr1;
+//        itr1 = sarasas.begin();
+//        if(el.rez < 5)
+//        {
+//            itr1 = sarasas.begin();
+//            advance(itr1, iteratorius);
+//            vargsiukai.push_back(el);
+//            sarasas.erase(itr1);
+//        }
+//        iteratorius++;
+//    }
+//
+//
+//    for (const auto& el : vargsiukai)
+//    {
+//        rf << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
+//        rf << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
+//
+//    }
+//
+//
+//    for (const auto& el : sarasas)
+//    {
+//        rf1 << std::left << std::setw(15) << el.vardas << " " << std::setw(15) << el.pavarde;
+//        rf1 << std::setw(15) << std::fixed << std::setprecision(2) << el.rez << std::setw(15) << std::fixed << std::setprecision(2) << el.mediana << " " << endl;
+//
+//    }
 
 
     end = std::chrono::high_resolution_clock::now();
@@ -150,11 +151,9 @@ void nuskaitymas()
 }
 
 
-bool isNumber(const string& s)
-{
+bool isNumber(const string& s) {
 
-    for (char const& ch : s)
-    {
+    for (char const& ch : s) {
         if (std::isdigit(ch) == 0)
             return false;
     }
@@ -186,146 +185,94 @@ void fileGenerator(int studentuKiekis, string failoPav)
     fout.close();
 }
 
-void ivestis(data& temp)
-{
+void ivestis(data& temp) {
     int n = 0;
     int k = 1;
     double vidurkis = 0;
-    int temporary;
-    list<int>::iterator it;
-    list<int>::iterator it2;
     string s1;
     temp.nd.clear();
-    cout << "Iveskite varda: ";
-    cin >> temp.vardas;
-    cout << "Iveskite pavarde: ";
-    cin >> temp.pavarde;
+    cout << "Iveskite varda: "; cin >> temp.vardas;
+    cout << "Iveskite pavarde: "; cin >> temp.pavarde;
     cout << "Rasykite 0, jei pazymiai baigiasi (max nd pazymiu yra " << C << " )" << endl;
 
-    while (k && (n < C))      //
-    {
+    while (k && (n < C)) {    //
 
         cout << "Iveskite " << n + 1 << " - a pazymi: ";
         cin >> s1;
-        if (isNumber(s1) && !(std::stoi(s1) > 10 || std::stoi(s1) < 0))
-        {
-            if (std::stoi(s1) == 0)
-            {
+        if (isNumber(s1) && !(std::stoi(s1) > 10 || std::stoi(s1) < 0)) {
+            if (std::stoi(s1) == 0) {
                 k = 0;
             }
-            else
-            {
+            else {
                 temp.nd.push_back(std::stoi(s1));
                 vidurkis += temp.nd.back();
             }
         }
-        else
-        {
+        else {
             temp.nd.push_back(10);
             vidurkis += temp.nd.back();
             cout << "galimai ivedete ne numeri arba netinkama pazymi todel " << n + 1 << " mokiniui(-ei) jis buvo pakeistas i 10" << endl;
         }
 
 
-        if (k != 0)
-        {
+        if (k != 0) {
             n++;
         }
     }
 
 
-    if (temp.nd.size() != 0)
-    {
+    if (temp.nd.size() != 0) {
         vidurkis = vidurkis / n;
     }
     else vidurkis = 0;
 
+
+
     cout << "Iveskite egzamino ivertinima: ";
     cin >> s1;
-    if (isNumber(s1) && !(std::stoi(s1) > 10 || std::stoi(s1) < 0))
-    {
+    if (isNumber(s1) && !(std::stoi(s1) > 10 || std::stoi(s1) < 0)) {
         temp.egz = std::stoi(s1);
     }
-    else
-    {
+    else {
         temp.egz = 10;
         cout << "galimai ivedete ne numeri arba netinkama egzamino pazymi todel " << n + 1 << " mokiniui(-ei) jis buvo pakeistas i 10" << endl;
     }
     temp.rez = vidurkis * 0.4 + temp.egz * 0.6;
 
-    if (temp.nd.size() == 0)
-    {
+    if (temp.nd.size() == 0) {
         temp.mediana = temp.egz * 0.6;
     }
-    else
-    {
-        it = temp.nd.begin();
-        if (temp.nd.size() % 2 == 1)
-        {
-            temporary = temp.nd.size() / 2;
-            advance(it, temporary);
-            temp.mediana = *it * 0.4 + temp.egz * 0.6;
-//            temp.mediana = temp.nd[temp.nd.size() / 2] * 0.4 + temp.egz * 0.6;
+    else {
+        sort(temp.nd.begin(), temp.nd.begin() + n);
+        if (temp.nd.size() % 2 == 1) {
+            temp.mediana = temp.nd[temp.nd.size() / 2] * 0.4 + temp.egz * 0.6;
         }
-        else
-        {
-            it2 = temp.nd.begin();
-            temporary = temp.nd.size() / 2;
-            advance(it, temporary);
-            temporary = (temp.nd.size() / 2) - 1;
-            advance(it2, temporary);
-            temp.mediana = ((*it + *it2) / 2.0) * 0.4 + temp.egz * 0.6;
+        else {
+            temp.mediana = ((temp.nd[temp.nd.size() / 2] + temp.nd[(temp.nd.size() / 2) - 1]) / 2.0) * 0.4 + temp.egz * 0.6;
         }
     }
-
-    it = temp.nd.begin();
-    if (temp.nd.size() % 2 == 1)
-    {
-        temporary = temp.nd.size() / 2;
-        advance(it, temporary);
-        temp.mediana = *it * 0.4 + temp.egz * 0.6;
-//            temp.mediana = temp.nd[temp.nd.size() / 2] * 0.4 + temp.egz * 0.6;
-    }
-    else
-    {
-        it2 = temp.nd.begin();
-        temporary = temp.nd.size() / 2;
-        advance(it, temporary);
-        temporary = (temp.nd.size() / 2) - 1;
-        advance(it2, temporary);
-        temp.mediana = ((*it + *it2) / 2.0) * 0.4 + temp.egz * 0.6;
-    }
-
 
     //return temp;
 }
 
-void ivestis1(data& temp, int kiek)
-{
-    int randas;
+void ivestis1(data& temp, int kiek) {
     double vidurkis = 0;
     srand((unsigned)time(0));
-    int temporary;
-    list<int>::iterator it;
-    list<int>::iterator it2;
+    if (kiek > 0) {
+    }
 
-    cout << "Iveskite varda: ";
-    cin >> temp.vardas;
-    cout << "Iveskite pavarde: ";
-    cin >> temp.pavarde;
+    cout << "Iveskite varda: "; cin >> temp.vardas;
+    cout << "Iveskite pavarde: "; cin >> temp.pavarde;
     cout << "pazymiai: " << endl;
-    for (int i = 0; i < kiek; i++)
-    {
-        randas = (rand() % 10) + 1;
-        temp.nd.push_back(randas);
-        cout << randas << " ";
-        vidurkis += randas;
+    for (int i = 0; i < kiek; i++) {
+        temp.nd[i] = (rand() % 10) + 1;
+        cout << temp.nd[i] << " ";
+        vidurkis += temp.nd[i];
         // n++;
 
     }
 
-    if (kiek != 0)
-    {
+    if (kiek != 0) {
         vidurkis = vidurkis / kiek;
     }
     else vidurkis = 0;
@@ -336,79 +283,58 @@ void ivestis1(data& temp, int kiek)
 
     temp.rez = vidurkis * 0.4 + temp.egz * 0.6;
 
-    if (kiek > 0)
-    {
-        temp.nd.sort();
-        it = temp.nd.begin();
-        if (kiek % 2 == 1)
-        {
-            temporary = kiek / 2;
-            advance(it, temporary);
-            temp.mediana = *it * 0.4 + temp.egz * 0.6;
+    if (kiek > 0) {
+        sort(temp.nd.begin(), temp.nd.begin() + kiek);
+        if (kiek % 2 == 1) {
+            temp.mediana = temp.nd[kiek / 2] * 0.4 + temp.egz * 0.6;
         }
-        else
-        {
-            it2 = temp.nd.begin();
-            temporary = kiek / 2;
-            advance(it, temporary);
-            temporary = (kiek / 2) - 1;
-            temp.mediana = ((*it + *it2) / 2.0) * 0.4 + temp.egz * 0.6;
+        else {
+            temp.mediana = ((temp.nd[kiek / 2] + temp.nd[(kiek / 2) - 1]) / 2.0) * 0.4 + temp.egz * 0.6;
         }
     }
     else temp.mediana = temp.egz * 0.6;
 }
 
-void ivestisfailas(data& temp)
-{
+void ivestisfailas(data& temp) {
     cout << "labas" << endl;
 }
 
-void isved(const data& temp)
-{
+void isved(const data& temp) {
     cout << std::left << std::setw(10) << temp.vardas << " " << std::setw(10) << temp.pavarde;
     cout << std::setw(10) << std::fixed << std::setprecision(2) << temp.rez << " " << endl;
 }
 
-void isvedmediana(const data& temp)
-{
+void isvedmediana(const data& temp) {
     cout << std::left << std::setw(10) << temp.vardas << " " << std::setw(10) << temp.pavarde;
     cout << std::setw(10) << std::fixed << std::setprecision(2) << temp.mediana << " " << endl;
 }
 
-void isvedfailas(const data& temp)
-{
+void isvedfailas(const data& temp) {
     cout << std::left << std::setw(10) << temp.vardas << " " << std::setw(10) << temp.pavarde;
     cout << std::setw(10) << std::fixed << std::setprecision(2) << temp.rez << std::setw(10) << std::fixed << std::setprecision(2) << temp.mediana << " " << endl;
 }
 
-void trycatch(string& a)
-{
+void trycatch(string& a) {
     cin >> a;
-    do
-    {
-        try
-        {
-            if (cin.fail())
-            {
+    do {
+        try {
+            if (cin.fail()) {
                 throw std::runtime_error("Irasete netinkamai\n");
             }
         }
-        catch (const std::runtime_error& e)
-        {
+        catch (const std::runtime_error& e) {
             std::wcout << e.what();
             std::wcin.clear();
             std::wcin.ignore(256, '\n');
             cout << "Iveskite is naujo: " << endl;
             cin >> a;
         }
-    }
-    while (std::cin.fail() == true);
+    } while (std::cin.fail() == true);
 }
 
-void eil_po_eil(std::string read_vardas, std::string write_vardas, list<data>& sarasas)
-{
+void eil_po_eil(std::string read_vardas, std::string write_vardas, deque<data>& sarasas) {
     data laikinas;
-    std::list<std::string> splited;
+    std::deque<std::string> splited;
     std::string eil;
     std::string abcas;
     std::stringstream my_buffer;
@@ -421,17 +347,14 @@ void eil_po_eil(std::string read_vardas, std::string write_vardas, list<data>& s
 
     out_f << std::left << std::setw(10) << "Vardas " << std::setw(10) << "Pavarde " << std::setw(10) << "Galutinis (Vid.) " << std::setw(10) << "Galutinis (Med.) " << endl;
     out_f << "---------------------------------------------------------------- " << endl;
-    while (open_f)
-    {
-        if (!open_f.eof())
-        {
+    while (open_f) {
+        if (!open_f.eof()) {
             std::getline(open_f, eil);
             splited.push_back(eil);
             my_buffer.str(eil);
             my_buffer >> laikinas.vardas >> laikinas.pavarde;
             cout << laikinas.vardas << " " << laikinas.pavarde << " ";
-            for (int i = 0; i < 15; i++)
-            {
+            for (int i = 0; i < 15; i++) {
                 my_buffer >> paz;
                 cout << paz << " ";
             }
@@ -474,69 +397,3 @@ void eil_po_eil(std::string read_vardas, std::string write_vardas, list<data>& s
 
 
 
-/*
-
-while (open_f) {
-    n = 1;
-    //  laikinas.nd.clear();
-    //  laikinas.nd.reserve(n);
-
-    if (!open_f.eof()) {
-        std::getline(open_f, eil);
-        my_buffer.str(eil);
-        // cout << eil;
-         // nuskaitymas
-
-
-        my_buffer >> laikinas.vardas >> laikinas.pavarde;
-        cout << laikinas.vardas << " " << laikinas.pavarde << " ";
-        for (int i = 0; i < 15; i++) { my_buffer >> paz; cout << paz; }
-
-
-        /*
-        while ((my_buffer >> paz)&&(isNumber(paz))) {
-       // if ((isNumber(paz)) {
-            n++;
-                vidurkis += std::stoi(paz);
-            //    cout << paz << " ";
-                laikinas.nd.reserve(n);
-                laikinas.nd.push_back(std::stoi(paz));
-      //  }
-        }
-
-
-        // my_buffer.str("");
-        // cout << endl;
-        // laikinas.egz = paz;
-         //cout << laikinas.egz << endl;
-        // laikinas.nd.pop_back();
-
-         vidurkis = vidurkis / laikinas.nd.size();
-         laikinas.rez = vidurkis * 0.4 + laikinas.egz * 0.6;
-
-
-         //mediana
-         sort(laikinas.nd.begin(), laikinas.nd.begin() + laikinas.nd.size());
-         if (laikinas.nd.size() % 2 == 1) {
-             laikinas.mediana = laikinas.nd[laikinas.nd.size() / 2] * 0.4 + laikinas.egz * 0.6;
-         }
-         else {
-             laikinas.mediana = ((laikinas.nd[laikinas.nd.size() / 2] + laikinas.nd[(laikinas.nd.size() / 2) - 1]) / 2.0) * 0.4 + laikinas.egz * 0.6;
-         }
-
-        // cout << abcas << endl;
-        // splited.push_back(eil);
-
-
-
-        // sarasas.push_back(laikinas);
-
-
-        // isvedfailas(laikinas);
-
-         //sarasas.clear();
-    }
-    else break;
-}
-
-*/

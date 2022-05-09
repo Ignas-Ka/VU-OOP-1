@@ -1,15 +1,26 @@
 #include "Circle.h"
 
-
-
 int main()
 {
     std::ios::sync_with_stdio(false);
 
 
+//    auto start = std::chrono::high_resolution_clock::now();
+//    auto st=start;
+//
+//
+//    fileGenerator(100000, "100000rez");
+//
+//
+//    auto end = std::chrono::high_resolution_clock::now();
+//    std::chrono::duration<double> diff = end-start; // Skirtumas (s)
+//    std::cout << "100000 eiluciu failo generavimas uztruko: "<< diff.count() << " s\n";
+//    return 0;
+
+
     setlocale(LC_ALL, "Lithuanian");
     int mok = 0;
-    list<data> sarasas;
+    deque<data> sarasas;
     data laik;
     string abc;
     string dar;

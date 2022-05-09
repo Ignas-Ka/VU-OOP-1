@@ -9,7 +9,7 @@
 #include <random>
 #include <stdio.h>
 #include <stdlib.h>
-#include <list>
+#include <deque>
 
 #include <sstream>
 #include <chrono>
@@ -25,7 +25,7 @@ using std::ofstream;
 using std::setw;
 using std::to_string;
 using std::left;
-using std::list;
+using std::deque;
 
 
 const int C = 50;
@@ -36,7 +36,7 @@ const string rez1 = "kieti100000.txt";
 struct data {
     string vardas, pavarde;
     int egz = 0;
-    list<int> nd;
+    deque<int> nd;
     double rez = 0, mediana = 0;
 
 };
@@ -52,6 +52,6 @@ void isvedfailas(const data& temp);
 void fileGenerator(int studentuKiekis, string failoPav);
 
 
-void eil_po_eil(std::string read_vardas, std::string write_vardas, list<data>& sarasas);
+void eil_po_eil(std::string read_vardas, std::string write_vardas, deque<data>& sarasas);
 bool compare_pavarde(const string& a, const string& b);
 void trycatch(string& a);
